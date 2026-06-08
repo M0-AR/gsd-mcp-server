@@ -2,7 +2,7 @@
   "name": "gsd-mcp-server",
   "version": "2.0.0",
   "description": "MCP server for the GSD (Get Shit Done) lifecycle framework — manage specs, phases, milestones, and project state via MCP tools and resources",
-  "mcpName": "io.github.anomalyco/gsd-mcp-server",
+  "mcpName": "io.github.M0-AR/gsd-mcp-server",
   "keywords": [
     "mcp", "gsd", "model-context-protocol", "opencode",
     "project-management", "lifecycle", "ai-tools",
@@ -12,11 +12,11 @@
   "author": "gsd-mcp-server contributors",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anomalyco/gsd-mcp-server.git"
+    "url": "git+https://github.com/M0-AR/gsd-mcp-server.git"
   },
-  "homepage": "https://github.com/anomalyco/gsd-mcp-server#readme",
+  "homepage": "https://github.com/M0-AR/gsd-mcp-server#readme",
   "bugs": {
-    "url": "https://github.com/anomalyco/gsd-mcp-server/issues"
+    "url": "https://github.com/M0-AR/gsd-mcp-server/issues"
   },
   "type": "module",
   "main": "index.js",
