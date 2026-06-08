@@ -1,6 +1,6 @@
 {
-  "name": "@m0-ar/gsd-mcp-server",
-  "version": "2.0.0",
+  "name": "@md0ar/gsd-mcp-server",
+  "version": "2.1.0",
   "description": "MCP server for the GSD (Get Shit Done) lifecycle framework — manage specs, phases, milestones, and project state via MCP tools and resources",
   "mcpName": "io.github.M0-AR/gsd-mcp-server",
   "keywords": [
@@ -42,8 +42,7 @@
     "postversion": "git push && git push --tags"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "engines": {
     "node": ">=18"
