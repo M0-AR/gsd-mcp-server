@@ -31,7 +31,7 @@
     "README.md"
   ],
   "scripts": {
-    "test": "node test-all.mjs && node test-edge.mjs",
+    "test": "node test-all.mjs && node test-edge.mjs && node test-functional.mjs",
     "test:main": "node test-all.mjs",
     "test:edge": "node test-edge.mjs",
     "start": "node index.js",

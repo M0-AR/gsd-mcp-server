@@ -152,7 +152,7 @@ npm install -g gsd-mcp-server
 npm test
 ```
 
-Runs 131 tests across both main and edge-case suites (94 main + 37 edge).
+Runs 188 tests across three suites: 94 main + 37 edge + 57 functional (real GSD project).
 
 ## Publishing (for maintainers)
 
