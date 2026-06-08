@@ -1,5 +1,5 @@
 {
-  "name": "gsd-mcp-server",
+  "name": "@m0-ar/gsd-mcp-server",
   "version": "2.0.0",
   "description": "MCP server for the GSD (Get Shit Done) lifecycle framework — manage specs, phases, milestones, and project state via MCP tools and resources",
   "mcpName": "io.github.M0-AR/gsd-mcp-server",
@@ -9,7 +9,7 @@
     "claude", "cursor"
   ],
   "license": "MIT",
-  "author": "gsd-mcp-server contributors",
+  "author": "Mohamad Al-Ashmar <moar.job@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/M0-AR/gsd-mcp-server.git"
@@ -27,6 +27,7 @@
     "index.js",
     "test-all.mjs",
     "test-edge.mjs",
+    "test-functional.mjs",
     "LICENSE",
     "README.md"
   ],

@@ -2,7 +2,7 @@
 
 MCP server for the [GSD (Get Shit Done)](https://opencode.ai) lifecycle framework. Exposes GSD project state, phases, milestones, and commands as MCP tools and resources.
 
-[![npm version](https://img.shields.io/npm/v/gsd-mcp-server)](https://www.npmjs.com/package/gsd-mcp-server)
+[![npm version](https://img.shields.io/npm/v/@m0-ar/gsd-mcp-server)](https://www.npmjs.com/package/@m0-ar/gsd-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![MCP Registry](https://img.shields.io/badge/MCP-Registry-6C47FF)](https://registry.modelcontextprotocol.io)
 
@@ -18,13 +18,12 @@ MCP server for the [GSD (Get Shit Done)](https://opencode.ai) lifecycle framewor
 Run instantly with npx (no install needed):
 
 ```bash
-npx -y gsd-mcp-server
-```
+npx -y @m0-ar/gsd-mcp-server
 
 Or install globally:
 
 ```bash
-npm install -g gsd-mcp-server
+npm install -g @m0-ar/gsd-mcp-server
 ```
 
 ## Configuration
@@ -36,7 +35,7 @@ npm install -g gsd-mcp-server
   "mcp": {
     "gsd-mcp-server": {
       "type": "local",
-      "command": ["npx", "-y", "gsd-mcp-server"],
+      "command": ["npx", "-y", "@m0-ar/gsd-mcp-server"],
       "enabled": true,
       "timeout": 30000
     }
@@ -53,7 +52,7 @@ npm install -g gsd-mcp-server
   "mcpServers": {
     "gsd-mcp-server": {
       "command": "npx",
-      "args": ["-y", "gsd-mcp-server"]
+      "args": ["-y", "@m0-ar/gsd-mcp-server"]
     }
   }
 }
@@ -83,7 +82,7 @@ npm install -g gsd-mcp-server
   "servers": {
     "gsd-mcp-server": {
       "command": "npx",
-      "args": ["-y", "gsd-mcp-server"]
+      "args": ["-y", "@m0-ar/gsd-mcp-server"]
     }
   }
 }
