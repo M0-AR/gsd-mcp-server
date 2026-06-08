@@ -94,6 +94,58 @@ async function main() {
   r = await send("tools/call", { name: "gsd_state", arguments: {} });
   check("gsd_state with empty args no crash", r.result?.content?.[0]?.text?.length > 0);
 
+  // gsd_validate invalid check
+  r = await send("tools/call", { name: "gsd_validate", arguments: { check: "invalid_check" } });
+  check("gsd_validate rejects invalid check", isError(r));
+
+  // gsd_phase_complete phase=0
+  r = await send("tools/call", { name: "gsd_phase_complete", arguments: { phase: 0 } });
+  check("gsd_phase_complete rejects phase=0", isError(r));
+
+  // gsd_config_get with empty key
+  r = await send("tools/call", { name: "gsd_config_get", arguments: { key: "" } });
+  check("gsd_config_get rejects empty key", isError(r));
+
+  // gsd_scaffold invalid type
+  r = await send("tools/call", { name: "gsd_scaffold", arguments: { type: "bad_type", phase: 1 } });
+  check("gsd_scaffold rejects invalid type", isError(r));
+
+  // gsd_websearch empty query
+  r = await send("tools/call", { name: "gsd_websearch", arguments: { query: "" } });
+  check("gsd_websearch rejects empty query", isError(r));
+
+  // gsd_workstreams invalid action
+  r = await send("tools/call", { name: "gsd_workstreams", arguments: { action: "bad_action" } });
+  check("gsd_workstreams rejects invalid action", isError(r));
+
+  // gsd_todo_complete empty filename
+  r = await send("tools/call", { name: "gsd_todo_complete", arguments: { filename: "" } });
+  check("gsd_todo_complete rejects empty filename", isError(r));
+
+  // gsd_commit empty message
+  r = await send("tools/call", { name: "gsd_commit", arguments: { message: "" } });
+  check("gsd_commit rejects empty message", isError(r));
+
+  // gsd_commit with files
+  r = await send("tools/call", { name: "gsd_commit", arguments: { message: "feat: add validation", files: "STATE.md ROADMAP.md" } });
+  check("gsd_commit with files no crash", r.result?.content?.[0]?.text?.length > 0);
+
+  // gsd_validate with repair flag
+  r = await send("tools/call", { name: "gsd_validate", arguments: { check: "health", repair: true } });
+  check("gsd_validate with repair no crash", r.result?.content?.[0]?.text?.length > 0);
+
+  // gsd_workstreams create (may fail since no project, but should not crash server)
+  r = await send("tools/call", { name: "gsd_workstreams", arguments: { action: "create", name: "test-ws" } });
+  check("gsd_workstreams create no crash", r.result?.content?.[0]?.text?.length > 0);
+
+  // gsd_websearch with freshness
+  r = await send("tools/call", { name: "gsd_websearch", arguments: { query: "test", limit: 5, freshness: "day" } });
+  check("gsd_websearch with all params no crash", r.result?.content?.[0]?.text?.length > 0);
+
+  // gsd_scaffold with phase-dir + name
+  r = await send("tools/call", { name: "gsd_scaffold", arguments: { type: "phase-dir", phase: 1, name: "validation" } });
+  check("gsd_scaffold phase-dir with name no crash", r.result?.content?.[0]?.text?.length > 0);
+
   console.log("\n=== EDGE CASE: GSD COMMAND ===\n");
 
   // gsd_run with empty command (should be rejected)

@@ -8,7 +8,7 @@ MCP server for the [GSD (Get Shit Done)](https://opencode.ai) lifecycle framewor
 
 ## Features
 
-- **23 tools** — manage project lifecycle via MCP tool calls
+- **34 tools** — manage project lifecycle via MCP tool calls
 - **6 resources** — read project files (state, roadmap, requirements, config, help)
 - **Zod-validated inputs** — type-safe parameter validation
 - **Secure execution** — no shell injection (`execFileSync` with argument arrays)
@@ -123,6 +123,17 @@ npm install -g gsd-mcp-server
 | `gsd_settings` | — | Configure toggles |
 | `gsd_set_profile` | `profile` | Switch model profile |
 | `gsd_run` | `command` | Run any GSD command |
+| `gsd_validate` | `check`, `repair?` | Run validation (consistency/health/agents) |
+| `gsd_roadmap_analyze` | — | Full roadmap + disk status analysis |
+| `gsd_phase_complete` | `phase` | Mark a phase as complete |
+| `gsd_config_get` | `key` | Read config value |
+| `gsd_config_set` | `key`, `value` | Write config value |
+| `gsd_commit` | `message`, `files?` | Commit planning docs to git |
+| `gsd_scaffold` | `type`, `phase`, `name?` | Create document templates |
+| `gsd_audit_uat` | — | Scan phases for unresolved verification |
+| `gsd_websearch` | `query`, `limit?`, `freshness?` | Web search via Brave API |
+| `gsd_todo_complete` | `filename` | Mark todo as completed |
+| `gsd_workstreams` | `action`, `name?` | Manage parallel workspaces |
 
 ## Resources
 
@@ -141,7 +152,7 @@ npm install -g gsd-mcp-server
 npm test
 ```
 
-Runs 96 tests across both main and edge-case suites.
+Runs 131 tests across both main and edge-case suites (94 main + 37 edge).
 
 ## Publishing (for maintainers)
 

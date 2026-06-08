@@ -254,6 +254,142 @@ server.tool("gsd_run", "Run any GSD command directly (see gsd://help for full li
   }
 });
 
+server.tool("gsd_validate", "Run GSD validation checks (consistency, health, agents)", {
+  check: z.enum(["consistency", "health", "agents"]).describe("Validation type"),
+  repair: z.boolean().optional().describe("Auto-repair health issues (health only)")
+}, async ({ check, repair }) => {
+  try {
+    const args = ["validate", check];
+    if (repair) args.push("--repair");
+    const out = gsd(...args);
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_roadmap_analyze", "Full roadmap analysis with disk status for each phase", {}, async () => {
+  try {
+    const out = gsd("roadmap", "analyze");
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_phase_complete", "Mark a phase as complete and update roadmap", {
+  phase: z.number().int().positive().describe("Phase number to complete")
+}, async ({ phase }) => {
+  try {
+    const out = gsd("phase", "complete", String(phase));
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_config_get", "Read a GSD configuration value", {
+  key: z.string().min(1).describe("Config key (dot-notation, e.g. workflow.profiles)")
+}, async ({ key }) => {
+  try {
+    const out = gsd("config-get", key);
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_config_set", "Write a GSD configuration value", {
+  key: z.string().min(1).describe("Config key (dot-notation, e.g. workflow.profiles.quality)"),
+  value: z.string().describe("JSON-encoded value")
+}, async ({ key, value }) => {
+  try {
+    const out = gsd("config-set", key, value);
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_commit", "Commit planning documents to git", {
+  message: z.string().min(1).describe("Commit message"),
+  files: z.string().optional().describe("Space-separated file paths to commit")
+}, async ({ message, files }) => {
+  try {
+    const args = ["commit", message];
+    if (files) args.push("--files", ...files.trim().split(/\s+/));
+    const out = gsd(...args);
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_scaffold", "Create GSD document templates (context, uat, verification, phase-dir)", {
+  type: z.enum(["context", "uat", "verification", "phase-dir"]).describe("Template type"),
+  phase: z.number().int().positive().describe("Phase number"),
+  name: z.string().optional().describe("Phase name (for phase-dir)")
+}, async ({ type, phase, name }) => {
+  try {
+    const args = ["scaffold", type, "--phase", String(phase)];
+    if (name) args.push("--name", name);
+    const out = gsd(...args);
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_audit_uat", "Scan all phases for unresolved UAT/verification items", {}, async () => {
+  try {
+    const out = gsd("audit-uat");
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_websearch", "Search the web via Brave API (requires GSD Brave config)", {
+  query: z.string().min(1).describe("Search query"),
+  limit: z.number().int().min(1).max(50).optional().describe("Result count"),
+  freshness: z.enum(["day", "week", "month"]).optional().describe("Recency filter")
+}, async ({ query, limit, freshness }) => {
+  try {
+    const args = ["websearch", query];
+    if (limit) args.push("--limit", String(limit));
+    if (freshness) args.push("--freshness", freshness);
+    const out = gsd(...args);
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_todo_complete", "Mark a todo as completed", {
+  filename: z.string().min(1).describe("Todo filename or identifier")
+}, async ({ filename }) => {
+  try {
+    const out = gsd("todo", "complete", filename);
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
+server.tool("gsd_workstreams", "Manage parallel workspaces for concurrent milestones", {
+  action: z.enum(["list", "create", "status"]).describe("Workstream action"),
+  name: z.string().optional().describe("Workstream name (for create)")
+}, async ({ action, name }) => {
+  try {
+    const args = ["workstream", action];
+    if (name) args.push(name);
+    const out = gsd(...args);
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
+  } catch (e) {
+    return { isError: true, content: [{ type: "text", text: `GSD error: ${e.stderr?.trim() || e.message}` }] };
+  }
+});
+
 // ── Transport ──────────────────────────────────────
 
 const transport = new StdioServerTransport();

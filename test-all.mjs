@@ -123,15 +123,18 @@ async function main() {
   const toolList = await server.send("tools/list");
   const tools = toolList.result?.tools || [];
   const toolNames = tools.map(t => t.name).sort();
-  check("tools/list count", tools.length, 23);
+  check("tools/list count", tools.length, 34);
 
   const expectedTools = [
-    "gsd_add_phase", "gsd_add_todo", "gsd_check_todos", "gsd_complete_milestone",
+    "gsd_add_phase", "gsd_add_todo", "gsd_audit_uat", "gsd_check_todos",
+    "gsd_commit", "gsd_complete_milestone", "gsd_config_get", "gsd_config_set",
     "gsd_debug", "gsd_discuss_phase", "gsd_execute_phase", "gsd_insert_phase",
     "gsd_list_phases", "gsd_map_codebase", "gsd_new_milestone", "gsd_new_project",
-    "gsd_plan_phase", "gsd_progress", "gsd_quick", "gsd_run",
-    "gsd_set_profile", "gsd_settings", "gsd_ship", "gsd_sketch",
-    "gsd_spike", "gsd_state", "gsd_verify_work",
+    "gsd_phase_complete", "gsd_plan_phase", "gsd_progress", "gsd_quick",
+    "gsd_roadmap_analyze", "gsd_run", "gsd_scaffold", "gsd_set_profile",
+    "gsd_settings", "gsd_ship", "gsd_sketch", "gsd_spike",
+    "gsd_state", "gsd_todo_complete", "gsd_validate", "gsd_verify_work",
+    "gsd_websearch", "gsd_workstreams",
   ].sort();
 
   for (let i = 0; i < expectedTools.length; i++) {
@@ -229,6 +232,50 @@ async function main() {
   // 23. gsd_run (tries "state get" but GSD tools expect separate args; "state" is prefix, "get" is action)
   const run = await server.send("tools/call", { name: "gsd_run", arguments: { command: "state get" } });
   check("gsd_run has content", !!run.result?.content?.[0]?.text, true);
+
+  // 24. gsd_validate
+  const valid = await server.send("tools/call", { name: "gsd_validate", arguments: { check: "health" } });
+  check("gsd_validate has content", !!valid.result?.content?.[0]?.text, true);
+
+  // 25. gsd_roadmap_analyze
+  const road = await server.send("tools/call", { name: "gsd_roadmap_analyze", arguments: {} });
+  check("gsd_roadmap_analyze has content", !!road.result?.content?.[0]?.text, true);
+
+  // 26. gsd_phase_complete
+  const phComp = await server.send("tools/call", { name: "gsd_phase_complete", arguments: { phase: 1 } });
+  check("gsd_phase_complete has content", !!phComp.result?.content?.[0]?.text, true);
+
+  // 27. gsd_config_get
+  const cfgGet = await server.send("tools/call", { name: "gsd_config_get", arguments: { key: "workflow.profiles" } });
+  check("gsd_config_get has content", !!cfgGet.result?.content?.[0]?.text, true);
+
+  // 28. gsd_config_set
+  const cfgSet = await server.send("tools/call", { name: "gsd_config_set", arguments: { key: "workflow.test_key", value: '"test"' } });
+  check("gsd_config_set has content", !!cfgSet.result?.content?.[0]?.text, true);
+
+  // 29. gsd_commit
+  const commit = await server.send("tools/call", { name: "gsd_commit", arguments: { message: "test commit" } });
+  check("gsd_commit has content", !!commit.result?.content?.[0]?.text, true);
+
+  // 30. gsd_scaffold
+  const scaf = await server.send("tools/call", { name: "gsd_scaffold", arguments: { type: "context", phase: 1 } });
+  check("gsd_scaffold has content", !!scaf.result?.content?.[0]?.text, true);
+
+  // 31. gsd_audit_uat
+  const audit = await server.send("tools/call", { name: "gsd_audit_uat", arguments: {} });
+  check("gsd_audit_uat has content", !!audit.result?.content?.[0]?.text, true);
+
+  // 32. gsd_websearch
+  const web = await server.send("tools/call", { name: "gsd_websearch", arguments: { query: "test search" } });
+  check("gsd_websearch has content", !!web.result?.content?.[0]?.text, true);
+
+  // 33. gsd_todo_complete
+  const todoDone = await server.send("tools/call", { name: "gsd_todo_complete", arguments: { filename: "test-todo.md" } });
+  check("gsd_todo_complete has content", !!todoDone.result?.content?.[0]?.text, true);
+
+  // 34. gsd_workstreams
+  const wsList = await server.send("tools/call", { name: "gsd_workstreams", arguments: { action: "list" } });
+  check("gsd_workstreams has content", !!wsList.result?.content?.[0]?.text, true);
 
   console.log("\n=== INPUT VALIDATION ===\n");
 
