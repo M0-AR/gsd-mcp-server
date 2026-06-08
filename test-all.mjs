@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 import { spawn } from "child_process";
+import { existsSync, rmSync } from "fs";
+import { join } from "path";
+// Clean up any stale .planning/ from prior runs
+const stale = join(import.meta.dirname, ".planning");
+if (existsSync(stale)) rmSync(stale, { recursive: true, force: true });
 
 let msgId = 0;
 const pending = new Map();
@@ -294,6 +299,9 @@ async function main() {
   check("unknown tool returns error", !!unknown.error || !!unknown.result?.isError, true);
 
   server.close();
+
+  // Clean up .planning/ created by side-effecting tool calls
+  if (existsSync(stale)) rmSync(stale, { recursive: true, force: true });
 
   console.log(`\n========================================`);
   console.log(`  Results: ${passed} passed, ${failed} failed`);
