@@ -1,0 +1,54 @@
+{
+  "name": "gsd-mcp-server",
+  "version": "2.0.0",
+  "description": "MCP server for the GSD (Get Shit Done) lifecycle framework — manage specs, phases, milestones, and project state via MCP tools and resources",
+  "mcpName": "io.github.anomalyco/gsd-mcp-server",
+  "keywords": [
+    "mcp", "gsd", "model-context-protocol", "opencode",
+    "project-management", "lifecycle", "ai-tools",
+    "claude", "cursor"
+  ],
+  "license": "MIT",
+  "author": "gsd-mcp-server contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anomalyco/gsd-mcp-server.git"
+  },
+  "homepage": "https://github.com/anomalyco/gsd-mcp-server#readme",
+  "bugs": {
+    "url": "https://github.com/anomalyco/gsd-mcp-server/issues"
+  },
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "gsd-mcp-server": "index.js"
+  },
+  "files": [
+    "index.js",
+    "test-all.mjs",
+    "test-edge.mjs",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node test-all.mjs && node test-edge.mjs",
+    "test:main": "node test-all.mjs",
+    "test:edge": "node test-edge.mjs",
+    "start": "node index.js",
+    "prepublishOnly": "npm test",
+    "preversion": "npm test",
+    "version": "git add -A",
+    "postversion": "git push && git push --tags"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "zod": "^3.23.0"
+  }
+}

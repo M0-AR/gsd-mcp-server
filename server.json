@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.anomalyco/gsd-mcp-server",
+  "title": "GSD MCP Server",
+  "description": "Manage specs, phases, milestones, and project state via MCP tools and resources for the GSD lifecycle framework",
+  "version": "2.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "gsd-mcp-server",
+      "version": "2.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
